@@ -452,6 +452,7 @@
       align-items: flex-start !important;
       justify-content: flex-start !important;
       gap: 8px !important;
+      text-align: left !important;
     }
     div[style*="height: 60px"][style*="position: fixed"] > button:first-child {
       display: flex !important;
@@ -464,6 +465,7 @@
     div[style*="height: 60px"][style*="position: fixed"] > button:first-child > span:first-child {
       font-size: 12px !important;
       width: 100% !important;
+      text-align: left !important;
     }
     div[style*="height: 60px"][style*="position: fixed"] > button:first-child > span:nth-child(2) {
       display: block !important;
@@ -472,18 +474,21 @@
       letter-spacing: .18em !important;
       width: 100% !important;
       margin-top: 2px !important;
+      text-align: left !important;
     }
     div[style*="height: 60px"][style*="position: fixed"] > div[style*="gap: 26px"] {
       gap: 10px !important;
       width: 100% !important;
       justify-content: flex-start !important;
       flex-wrap: wrap !important;
+      align-items: flex-end !important;
     }
     div[style*="height: 60px"][style*="position: fixed"] > div[style*="gap: 26px"] button {
       font-size: 10px !important;
       letter-spacing: .15em !important;
-      padding-bottom: 4px !important;
-      border-bottom-width: 2px !important;
+      padding-bottom: 0 !important;
+      margin-bottom: -2px !important;
+      align-self: flex-end !important;
     }
     div[style*="height: 60px"][style*="position: fixed"] > div[style*="gap: 26px"] button[style*="border-bottom: 1px solid var(--accent)"] {
       border-bottom: 2px solid var(--accent) !important;
