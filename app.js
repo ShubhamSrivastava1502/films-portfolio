@@ -697,6 +697,7 @@ function TopNav(_ref9) {
     onNavigate = _ref9.onNavigate;
   var items = [["home", "HOME"], ["work", "WORK"], ["series", "SERIES"], ["about", "ABOUT"], ["contact", "CONTACT"]];
   return React.createElement("div", {
+    className: "top-nav",
     style: {
       position: "fixed",
       top: 0,
@@ -737,6 +738,7 @@ function TopNav(_ref9) {
       letterSpacing: ".18em"
     }
   }, "\xB7 STILLS \xB7 CINE \xB7 BTS \xB7 POSTERS")), React.createElement("div", {
+    className: "top-nav-links",
     style: {
       display: "flex",
       gap: 26
@@ -1558,6 +1560,7 @@ function PageWork(_ref16) {
       textWrap: "pretty"
     }
   }, "Films, web series, and music videos \u2014 recent first. Open any row for that project's contact sheet, where you can ", React.createElement("i", null, "hold a single frame"), " \u2014 or flip the whole sheet \u2014 into colour.")), React.createElement("section", {
+    className: "work-filter-row",
     style: {
       padding: "0 36px 0",
       display: "flex",
@@ -2402,6 +2405,7 @@ function PageSeriesDetail(_ref22) {
     k: "series-".concat(s.id),
     onNavigate: onNavigate
   }, React.createElement("section", {
+    className: "series-meta-bar",
     style: {
       padding: "32px 36px 0",
       display: "flex",
@@ -3133,6 +3137,7 @@ function PageContact(_ref40) {
       flexDirection: "column"
     }
   }, React.createElement("a", {
+    className: "contact-row",
     href: "mailto:".concat(P.contact.email),
     style: {
       padding: "22px 0",
@@ -3161,6 +3166,7 @@ function PageContact(_ref40) {
       fontSize: 18
     }
   }, "\u2192")), React.createElement("a", {
+    className: "contact-row",
     href: P.contact.whatsapp,
     target: "_blank",
     rel: "noopener noreferrer",
