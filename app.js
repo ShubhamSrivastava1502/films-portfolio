@@ -1685,7 +1685,7 @@ function ContactFrame(_ref19) {
       position: "relative",
       cursor: colorable ? held ? "grabbing" : "grab" : "zoom-in",
       userSelect: "none",
-      touchAction: "none",
+      touchAction: "pan-y",
       transform: hover ? "scale(1.02)" : "scale(1)",
       transition: "transform .18s cubic-bezier(.2,.7,.3,1)",
       outline: hover ? "1px solid rgba(240,237,228,.3)" : "1px solid transparent"
@@ -1713,7 +1713,6 @@ function ContactFrame(_ref19) {
       setHeld(false);
     },
     onTouchStart: function onTouchStart(e) {
-      e.preventDefault();
       didHold.current = false;
       if (colorable) {
         holdTimer.current = setTimeout(function () {
@@ -1721,6 +1720,10 @@ function ContactFrame(_ref19) {
           setHeld(true);
         }, 180);
       }
+    },
+    onTouchMove: function onTouchMove() {
+      clearTimeout(holdTimer.current);
+      didHold.current = false;
     },
     onTouchEnd: function onTouchEnd() {
       clearTimeout(holdTimer.current);
@@ -2596,6 +2599,7 @@ function PageSeriesDetail(_ref22) {
             aspectRatio: isPortrait ? "2/3" : "3/2",
             position: "relative",
             cursor: isHeld ? "grabbing" : "zoom-in",
+            touchAction: "pan-y",
             transform: "scale(1)",
             transition: "transform .18s cubic-bezier(.2,.7,.3,1)",
             outline: "1px solid transparent"
@@ -2624,13 +2628,18 @@ function PageSeriesDetail(_ref22) {
           setHeldFrame(null);
           seriesDidHold.current = false;
         }), "onTouchStart", function onTouchStart(e) {
-          e.preventDefault();
           seriesDidHold.current = false;
           if (isMono) return;
           seriesHoldTimer.current = setTimeout(function () {
             seriesDidHold.current = true;
             setHeldFrame(fi);
           }, 180);
+        }), "onTouchMove", function onTouchMove() {
+          clearTimeout(seriesHoldTimer.current);
+          seriesDidHold.current = false;
+        }), "onTouchCancel", function onTouchCancel() {
+          clearTimeout(seriesHoldTimer.current);
+          seriesDidHold.current = false;
         }), "onTouchEnd", function onTouchEnd() {
           clearTimeout(seriesHoldTimer.current);
           setHeldFrame(null);
@@ -2698,6 +2707,7 @@ function PageSeriesDetail(_ref22) {
             aspectRatio: _isPortrait ? "2/3" : "3/2",
             position: "relative",
             cursor: _isHeld ? "grabbing" : "zoom-in",
+            touchAction: "pan-y",
             transform: "scale(1)",
             transition: "transform .18s cubic-bezier(.2,.7,.3,1)",
             outline: "1px solid transparent"
@@ -2725,12 +2735,17 @@ function PageSeriesDetail(_ref22) {
           setHeldFrame(null);
           seriesDidHold.current = false;
         }), "onTouchStart", function onTouchStart(e) {
-          e.preventDefault();
           seriesDidHold.current = false;
           seriesHoldTimer.current = setTimeout(function () {
             seriesDidHold.current = true;
             setHeldFrame(fi);
           }, 180);
+        }), "onTouchMove", function onTouchMove() {
+          clearTimeout(seriesHoldTimer.current);
+          seriesDidHold.current = false;
+        }), "onTouchCancel", function onTouchCancel() {
+          clearTimeout(seriesHoldTimer.current);
+          seriesDidHold.current = false;
         }), "onTouchEnd", function onTouchEnd() {
           clearTimeout(seriesHoldTimer.current);
           setHeldFrame(null);
