@@ -453,25 +453,52 @@
     div[style*="font-size: 40px"]  { font-size: 28px !important; }
     div[style*="font-size: 36px"]  { font-size: 22px !important; }
 
-    /* TopNav: tighten + keep nav visible */
+    /* TopNav: tighten and preserve the full header on mobile */
     div[style*="height: 60px"][style*="position: fixed"] {
       padding-left: 12px !important;
       padding-right: 12px !important;
+      padding-top: 16px !important;
+      padding-bottom: 12px !important;
+      height: auto !important;
+      flex-wrap: wrap !important;
+      align-items: flex-start !important;
+      justify-content: flex-start !important;
+      gap: 8px !important;
     }
-    /* Keep brand suffix visible and allow header to wrap cleanly */
-    div[style*="height: 60px"][style*="position: fixed"] > button:first-child > span:nth-child(2) {
-      display: inline !important;
+    div[style*="height: 60px"][style*="position: fixed"] > button:first-child {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      align-items: flex-start !important;
+      gap: 6px !important;
+      width: 100% !important;
+      justify-content: flex-start !important;
     }
     div[style*="height: 60px"][style*="position: fixed"] > button:first-child > span:first-child {
       font-size: 12px !important;
+      width: 100% !important;
     }
-    /* Compress nav items */
+    div[style*="height: 60px"][style*="position: fixed"] > button:first-child > span:nth-child(2) {
+      display: block !important;
+      font-size: 9px !important;
+      opacity: .75 !important;
+      letter-spacing: .18em !important;
+      width: 100% !important;
+      margin-top: 2px !important;
+    }
     div[style*="height: 60px"][style*="position: fixed"] > div[style*="gap: 26px"] {
-      gap: 14px !important;
+      gap: 10px !important;
+      width: 100% !important;
+      justify-content: flex-start !important;
+      flex-wrap: wrap !important;
     }
     div[style*="height: 60px"][style*="position: fixed"] > div[style*="gap: 26px"] button {
       font-size: 10px !important;
       letter-spacing: .15em !important;
+      padding-bottom: 4px !important;
+      border-bottom-width: 2px !important;
+    }
+    div[style*="height: 60px"][style*="position: fixed"] > div[style*="gap: 26px"] button[style*="border-bottom: 1px solid var(--accent)"] {
+      border-bottom: 2px solid var(--accent) !important;
     }
 
     /* Filmstrip dock: smaller thumbs, less padding */
