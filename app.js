@@ -160,6 +160,7 @@ function FilmFrame(_ref) {
       textShadow: "0 0 4px rgba(0,0,0,.7)"
     }
   }, frameNo), label && React.createElement("div", {
+    className: "film-frame-label",
     style: {
       position: "absolute",
       bottom: 6,
@@ -634,6 +635,7 @@ function Lightbox(_ref8) {
   }, renderPicture(src, "Behind-the-scenes still", false),
      colorSrc && renderPicture(colorSrc, "Behind-the-scenes still (colour)", true),
      React.createElement("div", {
+    className: "lightbox-caption",
     style: {
       position: "absolute",
       bottom: -36,
@@ -1064,7 +1066,9 @@ function PageHome(_ref14) {
       gap: 60,
       alignItems: "end"
     }
-  }, React.createElement("div", null, React.createElement(Eyebrow, null, "VOLUME OF WORK"), React.createElement(BigType, {
+  }, React.createElement("div", {
+    className: "home-hero-copy"
+  }, React.createElement(Eyebrow, null, "VOLUME OF WORK"), React.createElement(BigType, {
     size: "h1",
     style: {
       marginTop: 20
@@ -1237,6 +1241,7 @@ function PageHome(_ref14) {
       }
     }, "\xB7 P+M")) : archiveDisplay
   })), React.createElement("div", {
+    className: "home-hero-actions",
     style: {
       marginTop: 32,
       display: "flex",
@@ -1599,6 +1604,7 @@ function PageWork(_ref16) {
       opacity: .65
     }
   }, React.createElement("span", null, "SORT \u2014 RECENT"), React.createElement("span", null, "VIEW \u2014 LIST"))), React.createElement("div", {
+    className: "work-index-head",
     style: {
       padding: "12px 36px",
       display: "grid",

@@ -168,6 +168,21 @@
     .site-footer { grid-template-columns: 1fr; gap: 14px; padding: 24px 18px 22px; text-align: left; }
     .site-footer .sf-line { text-align: left; }
     .site-footer .sf-top { justify-self: start; }
+    .site-footer { align-items: start; justify-items: start; }
+    .site-footer .sf-copy { justify-self: start; }
+    .home-hero-copy { text-align: left !important; }
+    .home-hero-actions { flex-wrap: wrap !important; justify-content: flex-start !important; }
+    .lightbox-caption { bottom: 12px !important; font-size: 9px !important; gap: 10px !important; padding: 0 10px !important; }
+    .work-index-head { padding: 12px 0 !important; }
+    .work-index-head > *:nth-child(2),
+    .work-index-head > *:nth-child(5),
+    .work-index-head > *:nth-child(6),
+    .work-index-head > *:nth-child(7),
+    .work-index-head > *:nth-child(8) {
+      display: none !important;
+    }
+    .work-index-head > *:nth-child(3) { font-size: 17px !important; }
+    .work-index-head > *:nth-child(4) { font-size: 11px !important; opacity: .55 !important; }
   }
   @keyframes filmIn {
     0%   { opacity: 0; transform: translateY(6px); }
