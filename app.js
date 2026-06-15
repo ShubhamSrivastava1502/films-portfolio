@@ -2024,10 +2024,11 @@ function PageFilm(_ref20) {
       marginTop: 8
     }
   }, f.status === "PRODUCTION" ? "SHOOT IN PROGRESS \u2014 FRAMES AVAILABLE POST WRAP" : "FRAMES FROM THIS PRODUCTION ARE BEING COMPILED \u2014 CONTACT FOR AVAILABILITY")) : React.createElement(React.Fragment, null, function () {
+    var order = typeof SHEET_ORDER !== "undefined" && SHEET_ORDER[f.id] || null;
     var photoCount = typeof PHOTO_DATA !== "undefined" ? Object.keys(PHOTO_DATA).filter(function (k) {
       return k.startsWith("".concat(f.id, "_sheet_"));
     }).length : 0;
-    var frameCount = photoCount > 0 ? photoCount : 18;
+    var frameCount = order ? order.length : photoCount > 0 ? photoCount : 18;
     return null; // label is below
   }(), React.createElement("div", {
     style: {
@@ -2040,7 +2041,8 @@ function PageFilm(_ref20) {
     var photoCount = typeof PHOTO_DATA !== "undefined" ? Object.keys(PHOTO_DATA).filter(function (k) {
       return k.startsWith("".concat(f.id, "_sheet_"));
     }).length : 0;
-    var frameCount = photoCount > 0 ? photoCount : 18;
+    var order = typeof SHEET_ORDER !== "undefined" && SHEET_ORDER[f.id] || null;
+    var frameCount = order ? order.length : photoCount > 0 ? photoCount : 18;
     return React.createElement(Eyebrow, null, isLookTest ? "LOOK TEST \u2014 ".concat(frameCount, " REFERENCE FRAMES \xB7 ARCHIVE ").concat(f.archive || f.frames) : "CONTACT SHEET \u2014 ".concat(frameCount, " SELECTS \xB7 ARCHIVE ").concat(f.archive || f.frames));
   }(), React.createElement(BigType, {
     size: "h2",
@@ -2093,7 +2095,7 @@ function PageFilm(_ref20) {
     var photoCount = typeof PHOTO_DATA !== "undefined" ? Object.keys(PHOTO_DATA).filter(function (k) {
       return k.startsWith("".concat(f.id, "_sheet_"));
     }).length : 0;
-    var frameCount = photoCount > 0 ? photoCount : 18;
+    var frameCount = order ? order.length : photoCount > 0 ? photoCount : 18;
     return React.createElement("div", {
       style: {
         display: "grid",
