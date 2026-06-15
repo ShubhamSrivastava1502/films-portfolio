@@ -172,8 +172,10 @@
     .site-footer .sf-copy { justify-self: start; }
     .home-hero-copy { text-align: left !important; }
     .home-hero-actions { flex-wrap: wrap !important; justify-content: flex-start !important; }
-    .top-nav { padding-left: 12px !important; padding-right: 12px !important; }
-    .top-nav-links { flex-wrap: wrap !important; gap: 12px !important; }
+    .top-nav { padding-left: 12px !important; padding-right: 12px !important; flex-wrap: wrap !important; height: auto !important; align-items: flex-start !important; padding-top: 10px !important; padding-bottom: 10px !important; }
+    .top-nav > button { display: flex !important; flex-wrap: wrap !important; align-items: flex-start !important; gap: 6px !important; }
+    .top-nav > button > span:first-child { width: 100% !important; }
+    .top-nav-links { flex-wrap: wrap !important; gap: 12px !important; width: 100% !important; justify-content: flex-start !important; }
     .work-filter-row, .series-meta-bar { flex-wrap: wrap !important; gap: 12px !important; align-items: flex-start !important; }
     .contact-row { flex-wrap: wrap !important; gap: 10px !important; align-items: flex-start !important; }
     .contact-row span, .contact-row div { min-width: 0; }
@@ -189,7 +191,14 @@
       grid-template-columns: 1fr !important;
       gap: 18px !important;
     }
-    .lightbox-caption { bottom: 12px !important; font-size: 9px !important; gap: 10px !important; padding: 0 10px !important; }
+    .lightbox-caption {
+      position: static !important;
+      bottom: auto !important;
+      margin-top: 10px !important;
+      font-size: 9px !important;
+      gap: 10px !important;
+      padding: 0 10px !important;
+    }
     .work-index-head { padding: 12px 0 !important; }
     .work-index-head > *:nth-child(2),
     .work-index-head > *:nth-child(5),
@@ -444,15 +453,14 @@
     div[style*="font-size: 40px"]  { font-size: 28px !important; }
     div[style*="font-size: 36px"]  { font-size: 22px !important; }
 
-    /* TopNav: tighten + hide non-essentials */
+    /* TopNav: tighten + keep nav visible */
     div[style*="height: 60px"][style*="position: fixed"] {
       padding-left: 12px !important;
       padding-right: 12px !important;
     }
-    /* Hide brand "· BTS" suffix and REC/timecode block */
-    div[style*="height: 60px"][style*="position: fixed"] > button:first-child > span:nth-child(2),
-    div[style*="height: 60px"][style*="position: fixed"] > div:last-child {
-      display: none !important;
+    /* Keep brand suffix visible and allow header to wrap cleanly */
+    div[style*="height: 60px"][style*="position: fixed"] > button:first-child > span:nth-child(2) {
+      display: inline !important;
     }
     div[style*="height: 60px"][style*="position: fixed"] > button:first-child > span:first-child {
       font-size: 12px !important;
