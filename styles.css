@@ -183,6 +183,20 @@
     }
     .work-index-head > *:nth-child(3) { font-size: 17px !important; }
     .work-index-head > *:nth-child(4) { font-size: 11px !important; opacity: .55 !important; }
+
+    /* Make most stat header rows readable on phones */
+    div[style*="font-size: 11px"][style*="letter-spacing: .25em"],
+    div[style*="font-size: 12px"][style*="letter-spacing: .25em"] {
+      font-size: 10px !important;
+      letter-spacing: .15em !important;
+    }
+
+    /* Ensure top-level page padding is not too wide */
+    section[style*="padding: 60px 36px"] { padding-left: 14px !important; padding-right: 14px !important; }
+    section[style*="padding: 0 36px"] { padding-left: 14px !important; padding-right: 14px !important; }
+
+    /* Cap hero copy width on narrow phones */
+    .home-hero-copy { max-width: 100%; }
   }
   @keyframes filmIn {
     0%   { opacity: 0; transform: translateY(6px); }
@@ -262,6 +276,10 @@
   }
   @media (max-width: 768px) {
     .bts-field-grid { grid-template-columns: 1fr; }
+    .bts-form-actions { justify-content: stretch; }
+    .bts-submit, .bts-submit.alt { width: 100%; padding: 14px 16px; }
+    .bts-pill { flex: 1 1 100%; min-width: 0; }
+    .bts-pill[aria-pressed="true"] { color: #000; }
   }
 
   /* ─── WHATSAPP FLOATING ACTION (monochrome) ───────────────────────── */
@@ -375,6 +393,10 @@
     div[style*="grid-template-columns: repeat(3, 1fr)"] {
       grid-template-columns: 1fr !important;
       gap: 14px !important;
+    }
+    section[style*="padding: 20px 36px 0"][style*="grid-template-columns: repeat(3, 1fr)"] {
+      grid-template-columns: 1fr !important;
+      gap: 18px !important;
     }
 
     /* 6-col contact sheet → 2-col */
