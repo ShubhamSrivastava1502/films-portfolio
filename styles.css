@@ -351,19 +351,7 @@
       width: 50px;
       height: 50px;
     }
-  }
-
-  /* Smoother hover on TopNav links */
-  div[style*="position: fixed"][style*="height: 60px"] button {
-    transition: opacity var(--t-fast), border-color var(--t-fast);
-  }
-
-  /* ─── MOBILE / PHONE ──────────────────────────────────────────────── */
-  @media (max-width: 768px) {
-    html { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
-
-    /* Side-padding reductions on common section paddings */
-    section[style*="padding: 60px 36px"],
+      body.footer-in-view .wa-fab { opacity: 1 !important; pointer-events: auto !important; transform: translateY(0) !important; }
     section[style*="padding: 32px 36px"],
     section[style*="padding: 44px 36px"],
     section[style*="padding: 28px 36px"],
@@ -610,6 +598,9 @@
       .page-enter {
         padding-top: calc(52px + env(safe-area-inset-top)) !important;
         padding-bottom: calc(104px + env(safe-area-inset-bottom)) !important;
+      }
+      .site-footer {
+        padding-bottom: calc(24px + env(safe-area-inset-bottom)) !important;
       }
     }
   }

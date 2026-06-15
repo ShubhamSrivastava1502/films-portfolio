@@ -887,7 +887,7 @@ function SiteFooter() {
     if (!el || typeof IntersectionObserver === "undefined") return;
     var io = new IntersectionObserver(function (entries) {
       document.body.classList.toggle("footer-in-view", entries[0].isIntersecting);
-    }, { rootMargin: "0px 0px -10px 0px" });
+    }, { rootMargin: "0px 0px -134px 0px" });
     io.observe(el);
     return function () {
       io.disconnect();
