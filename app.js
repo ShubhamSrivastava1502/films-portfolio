@@ -2109,16 +2109,27 @@ function PageFilm(_ref20) {
       // Ordered list of real frames for lightbox prev/next navigation
       var lbItems = [];
       var frameToLb = {};
-      var landscapeCount = order ? order.filter(function (origIdx) {
-        var pd = typeof PHOTO_DATA !== "undefined" ? PHOTO_DATA["".concat(f.id, "_sheet_").concat(origIdx)] : null;
-        return !pd || pd.orientation !== "portrait";
-      }).length : frameCount;
+      var orderedFrameIndices = [];
+      var landscapeOrder = [];
+      var portraitOrder = [];
+      if (order) {
+        for (var _j = 0; _j < order.length; _j++) {
+          var _origIdx = order[_j];
+          var _pd = typeof PHOTO_DATA !== "undefined" ? PHOTO_DATA["".concat(f.id, "_sheet_").concat(_origIdx)] : null;
+          if (_pd && _pd.orientation === "portrait") portraitOrder.push(_origIdx);
+          else landscapeOrder.push(_origIdx);
+        }
+        orderedFrameIndices = landscapeOrder.concat(portraitOrder);
+      } else {
+        for (var _i2 = 0; _i2 < frameCount; _i2++) {
+          orderedFrameIndices.push(_i2);
+        }
+      }
+      var landscapeCount = landscapeOrder.length || frameCount;
       var cols = 6;
       var rem = landscapeCount % cols;
       var spacersNeeded = rem === 0 ? 0 : cols - rem;
       var dividerInserted = false;
-      // frameIdx tracks position in the SHEET_ORDER array — never includes spacers/dividers
-      var frameIdx = 0;
       for (var _frameIdx = 0; _frameIdx < frameCount; _frameIdx++) {
         // Insert spacers + divider at landscape/portrait boundary
         if (_frameIdx === landscapeCount && !dividerInserted) {
@@ -2154,8 +2165,8 @@ function PageFilm(_ref20) {
             }
           })));
         }
-        // origIdx comes from SHEET_ORDER using frameIdx — never affected by spacers
-        var origIdx = order ? order[_frameIdx] : _frameIdx;
+        // origIdx comes from the ordered frame list, grouped by landscape then portrait
+        var origIdx = orderedFrameIndices[_frameIdx];
         var framePd = typeof PHOTO_DATA !== "undefined" ? PHOTO_DATA["".concat(f.id, "_sheet_").concat(origIdx)] : null;
         if (framePd) {
           frameToLb[_frameIdx] = lbItems.length;
