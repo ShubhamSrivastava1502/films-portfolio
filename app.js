@@ -160,7 +160,6 @@ function FilmFrame(_ref) {
       textShadow: "0 0 4px rgba(0,0,0,.7)"
     }
   }, frameNo), label && React.createElement("div", {
-    className: "film-frame-label",
     style: {
       position: "absolute",
       bottom: 6,
@@ -635,7 +634,7 @@ function Lightbox(_ref8) {
   }, renderPicture(src, "Behind-the-scenes still", false),
      colorSrc && renderPicture(colorSrc, "Behind-the-scenes still (colour)", true),
      React.createElement("div", {
-    className: "lightbox-caption",
+    className: "lb-caption",
     style: {
       position: "absolute",
       bottom: -36,
@@ -697,7 +696,6 @@ function TopNav(_ref9) {
     onNavigate = _ref9.onNavigate;
   var items = [["home", "HOME"], ["work", "WORK"], ["series", "SERIES"], ["about", "ABOUT"], ["contact", "CONTACT"]];
   return React.createElement("div", {
-    className: "top-nav",
     style: {
       position: "fixed",
       top: 0,
@@ -738,7 +736,6 @@ function TopNav(_ref9) {
       letterSpacing: ".18em"
     }
   }, "\xB7 STILLS \xB7 CINE \xB7 BTS \xB7 POSTERS")), React.createElement("div", {
-    className: "top-nav-links",
     style: {
       display: "flex",
       gap: 26
@@ -887,7 +884,7 @@ function SiteFooter() {
     if (!el || typeof IntersectionObserver === "undefined") return;
     var io = new IntersectionObserver(function (entries) {
       document.body.classList.toggle("footer-in-view", entries[0].isIntersecting);
-    }, { rootMargin: "0px 0px -134px 0px" });
+    }, { rootMargin: "0px 0px -10px 0px" });
     io.observe(el);
     return function () {
       io.disconnect();
@@ -1068,9 +1065,7 @@ function PageHome(_ref14) {
       gap: 60,
       alignItems: "end"
     }
-  }, React.createElement("div", {
-    className: "home-hero-copy"
-  }, React.createElement(Eyebrow, null, "VOLUME OF WORK"), React.createElement(BigType, {
+  }, React.createElement("div", null, React.createElement(Eyebrow, null, "VOLUME OF WORK"), React.createElement(BigType, {
     size: "h1",
     style: {
       marginTop: 20
@@ -1243,7 +1238,6 @@ function PageHome(_ref14) {
       }
     }, "\xB7 P+M")) : archiveDisplay
   })), React.createElement("div", {
-    className: "home-hero-actions",
     style: {
       marginTop: 32,
       display: "flex",
@@ -1560,7 +1554,7 @@ function PageWork(_ref16) {
       textWrap: "pretty"
     }
   }, "Films, web series, and music videos \u2014 recent first. Open any row for that project's contact sheet, where you can ", React.createElement("i", null, "hold a single frame"), " \u2014 or flip the whole sheet \u2014 into colour.")), React.createElement("section", {
-    className: "work-filter-row",
+    className: "work-filterbar",
     style: {
       padding: "0 36px 0",
       display: "flex",
@@ -1607,7 +1601,6 @@ function PageWork(_ref16) {
       opacity: .65
     }
   }, React.createElement("span", null, "SORT \u2014 RECENT"), React.createElement("span", null, "VIEW \u2014 LIST"))), React.createElement("div", {
-    className: "work-index-head",
     style: {
       padding: "12px 36px",
       display: "grid",
@@ -1685,7 +1678,7 @@ function ContactFrame(_ref19) {
       position: "relative",
       cursor: colorable ? held ? "grabbing" : "grab" : "zoom-in",
       userSelect: "none",
-      touchAction: "pan-y",
+      touchAction: "none",
       transform: hover ? "scale(1.02)" : "scale(1)",
       transition: "transform .18s cubic-bezier(.2,.7,.3,1)",
       outline: hover ? "1px solid rgba(240,237,228,.3)" : "1px solid transparent"
@@ -1713,6 +1706,7 @@ function ContactFrame(_ref19) {
       setHeld(false);
     },
     onTouchStart: function onTouchStart(e) {
+      e.preventDefault();
       didHold.current = false;
       if (colorable) {
         holdTimer.current = setTimeout(function () {
@@ -1720,10 +1714,6 @@ function ContactFrame(_ref19) {
           setHeld(true);
         }, 180);
       }
-    },
-    onTouchMove: function onTouchMove() {
-      clearTimeout(holdTimer.current);
-      didHold.current = false;
     },
     onTouchEnd: function onTouchEnd() {
       clearTimeout(holdTimer.current);
@@ -2036,11 +2026,10 @@ function PageFilm(_ref20) {
       marginTop: 8
     }
   }, f.status === "PRODUCTION" ? "SHOOT IN PROGRESS \u2014 FRAMES AVAILABLE POST WRAP" : "FRAMES FROM THIS PRODUCTION ARE BEING COMPILED \u2014 CONTACT FOR AVAILABILITY")) : React.createElement(React.Fragment, null, function () {
-    var order = typeof SHEET_ORDER !== "undefined" && SHEET_ORDER[f.id] || null;
     var photoCount = typeof PHOTO_DATA !== "undefined" ? Object.keys(PHOTO_DATA).filter(function (k) {
       return k.startsWith("".concat(f.id, "_sheet_"));
     }).length : 0;
-    var frameCount = order ? order.length : photoCount > 0 ? photoCount : 18;
+    var frameCount = photoCount > 0 ? photoCount : 18;
     return null; // label is below
   }(), React.createElement("div", {
     style: {
@@ -2053,8 +2042,7 @@ function PageFilm(_ref20) {
     var photoCount = typeof PHOTO_DATA !== "undefined" ? Object.keys(PHOTO_DATA).filter(function (k) {
       return k.startsWith("".concat(f.id, "_sheet_"));
     }).length : 0;
-    var order = typeof SHEET_ORDER !== "undefined" && SHEET_ORDER[f.id] || null;
-    var frameCount = order ? order.length : photoCount > 0 ? photoCount : 18;
+    var frameCount = photoCount > 0 ? photoCount : 18;
     return React.createElement(Eyebrow, null, isLookTest ? "LOOK TEST \u2014 ".concat(frameCount, " REFERENCE FRAMES \xB7 ARCHIVE ").concat(f.archive || f.frames) : "CONTACT SHEET \u2014 ".concat(frameCount, " SELECTS \xB7 ARCHIVE ").concat(f.archive || f.frames));
   }(), React.createElement(BigType, {
     size: "h2",
@@ -2107,7 +2095,7 @@ function PageFilm(_ref20) {
     var photoCount = typeof PHOTO_DATA !== "undefined" ? Object.keys(PHOTO_DATA).filter(function (k) {
       return k.startsWith("".concat(f.id, "_sheet_"));
     }).length : 0;
-    var frameCount = order ? order.length : photoCount > 0 ? photoCount : 18;
+    var frameCount = photoCount > 0 ? photoCount : 18;
     return React.createElement("div", {
       style: {
         display: "grid",
@@ -2121,27 +2109,16 @@ function PageFilm(_ref20) {
       // Ordered list of real frames for lightbox prev/next navigation
       var lbItems = [];
       var frameToLb = {};
-      var orderedFrameIndices = [];
-      var landscapeOrder = [];
-      var portraitOrder = [];
-      if (order) {
-        for (var _j = 0; _j < order.length; _j++) {
-          var _origIdx = order[_j];
-          var _pd = typeof PHOTO_DATA !== "undefined" ? PHOTO_DATA["".concat(f.id, "_sheet_").concat(_origIdx)] : null;
-          if (_pd && _pd.orientation === "portrait") portraitOrder.push(_origIdx);
-          else landscapeOrder.push(_origIdx);
-        }
-        orderedFrameIndices = landscapeOrder.concat(portraitOrder);
-      } else {
-        for (var _i2 = 0; _i2 < frameCount; _i2++) {
-          orderedFrameIndices.push(_i2);
-        }
-      }
-      var landscapeCount = landscapeOrder.length || frameCount;
+      var landscapeCount = order ? order.filter(function (origIdx) {
+        var pd = typeof PHOTO_DATA !== "undefined" ? PHOTO_DATA["".concat(f.id, "_sheet_").concat(origIdx)] : null;
+        return !pd || pd.orientation !== "portrait";
+      }).length : frameCount;
       var cols = 6;
       var rem = landscapeCount % cols;
       var spacersNeeded = rem === 0 ? 0 : cols - rem;
       var dividerInserted = false;
+      // frameIdx tracks position in the SHEET_ORDER array — never includes spacers/dividers
+      var frameIdx = 0;
       for (var _frameIdx = 0; _frameIdx < frameCount; _frameIdx++) {
         // Insert spacers + divider at landscape/portrait boundary
         if (_frameIdx === landscapeCount && !dividerInserted) {
@@ -2177,8 +2154,8 @@ function PageFilm(_ref20) {
             }
           })));
         }
-        // origIdx comes from the ordered frame list, grouped by landscape then portrait
-        var origIdx = orderedFrameIndices[_frameIdx];
+        // origIdx comes from SHEET_ORDER using frameIdx — never affected by spacers
+        var origIdx = order ? order[_frameIdx] : _frameIdx;
         var framePd = typeof PHOTO_DATA !== "undefined" ? PHOTO_DATA["".concat(f.id, "_sheet_").concat(origIdx)] : null;
         if (framePd) {
           frameToLb[_frameIdx] = lbItems.length;
@@ -2408,7 +2385,6 @@ function PageSeriesDetail(_ref22) {
     k: "series-".concat(s.id),
     onNavigate: onNavigate
   }, React.createElement("section", {
-    className: "series-meta-bar",
     style: {
       padding: "32px 36px 0",
       display: "flex",
@@ -2599,7 +2575,6 @@ function PageSeriesDetail(_ref22) {
             aspectRatio: isPortrait ? "2/3" : "3/2",
             position: "relative",
             cursor: isHeld ? "grabbing" : "zoom-in",
-            touchAction: "pan-y",
             transform: "scale(1)",
             transition: "transform .18s cubic-bezier(.2,.7,.3,1)",
             outline: "1px solid transparent"
@@ -2628,18 +2603,13 @@ function PageSeriesDetail(_ref22) {
           setHeldFrame(null);
           seriesDidHold.current = false;
         }), "onTouchStart", function onTouchStart(e) {
+          e.preventDefault();
           seriesDidHold.current = false;
           if (isMono) return;
           seriesHoldTimer.current = setTimeout(function () {
             seriesDidHold.current = true;
             setHeldFrame(fi);
           }, 180);
-        }), "onTouchMove", function onTouchMove() {
-          clearTimeout(seriesHoldTimer.current);
-          seriesDidHold.current = false;
-        }), "onTouchCancel", function onTouchCancel() {
-          clearTimeout(seriesHoldTimer.current);
-          seriesDidHold.current = false;
         }), "onTouchEnd", function onTouchEnd() {
           clearTimeout(seriesHoldTimer.current);
           setHeldFrame(null);
@@ -2707,7 +2677,6 @@ function PageSeriesDetail(_ref22) {
             aspectRatio: _isPortrait ? "2/3" : "3/2",
             position: "relative",
             cursor: _isHeld ? "grabbing" : "zoom-in",
-            touchAction: "pan-y",
             transform: "scale(1)",
             transition: "transform .18s cubic-bezier(.2,.7,.3,1)",
             outline: "1px solid transparent"
@@ -2735,17 +2704,12 @@ function PageSeriesDetail(_ref22) {
           setHeldFrame(null);
           seriesDidHold.current = false;
         }), "onTouchStart", function onTouchStart(e) {
+          e.preventDefault();
           seriesDidHold.current = false;
           seriesHoldTimer.current = setTimeout(function () {
             seriesDidHold.current = true;
             setHeldFrame(fi);
           }, 180);
-        }), "onTouchMove", function onTouchMove() {
-          clearTimeout(seriesHoldTimer.current);
-          seriesDidHold.current = false;
-        }), "onTouchCancel", function onTouchCancel() {
-          clearTimeout(seriesHoldTimer.current);
-          seriesDidHold.current = false;
         }), "onTouchEnd", function onTouchEnd() {
           clearTimeout(seriesHoldTimer.current);
           setHeldFrame(null);
@@ -3152,7 +3116,6 @@ function PageContact(_ref40) {
       flexDirection: "column"
     }
   }, React.createElement("a", {
-    className: "contact-row",
     href: "mailto:".concat(P.contact.email),
     style: {
       padding: "22px 0",
@@ -3181,7 +3144,6 @@ function PageContact(_ref40) {
       fontSize: 18
     }
   }, "\u2192")), React.createElement("a", {
-    className: "contact-row",
     href: P.contact.whatsapp,
     target: "_blank",
     rel: "noopener noreferrer",

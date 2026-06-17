@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://shubhamsrivastava.github.io/films-portfolio/sitemap.xml
+Sitemap: https://shubhamsrivastava1502.github.io/films-portfolio/sitemap.xml

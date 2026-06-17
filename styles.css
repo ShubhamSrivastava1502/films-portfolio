@@ -165,64 +165,10 @@
   .site-footer .sf-top { opacity: .7; text-decoration: none; text-transform: uppercase; letter-spacing: .18em; transition: opacity var(--t-fast), color var(--t-fast); justify-self: end; }
   .site-footer .sf-top:hover { opacity: 1; color: var(--accent); }
   @media (max-width: 768px) {
-    .site-footer { grid-template-columns: 1fr; gap: 14px; padding: 24px 18px 22px; text-align: left; }
-    .site-footer .sf-line { text-align: left; }
-    .site-footer .sf-top { justify-self: start; }
-    .site-footer { align-items: start; justify-items: start; }
-    .site-footer .sf-copy { justify-self: start; }
-    .home-hero-copy { text-align: left !important; }
-    .home-hero-actions { flex-wrap: wrap !important; justify-content: flex-start !important; }
-    .top-nav { padding-left: 12px !important; padding-right: 12px !important; flex-wrap: wrap !important; height: auto !important; align-items: flex-start !important; padding-top: 10px !important; padding-bottom: 10px !important; }
-    .top-nav > button { display: flex !important; flex-wrap: wrap !important; align-items: flex-start !important; gap: 6px !important; }
-    .top-nav > button > span:first-child { width: 100% !important; }
-    .top-nav-links { flex-wrap: wrap !important; gap: 12px !important; width: 100% !important; justify-content: flex-start !important; }
-    .work-filter-row, .series-meta-bar { flex-wrap: wrap !important; gap: 12px !important; align-items: flex-start !important; }
-    .contact-row { flex-wrap: wrap !important; gap: 10px !important; align-items: flex-start !important; }
-    .contact-row span, .contact-row div { min-width: 0; }
-    div[style*="display: flex"][style*="justify-content: space-between"],
-    section[style*="display: flex"][style*="justify-content: space-between"],
-    a[style*="display: flex"][style*="justify-content: space-between"],
-    button[style*="display: flex"][style*="justify-content: space-between"] {
-      flex-wrap: wrap !important;
-      gap: 12px !important;
-      align-items: flex-start !important;
-    }
-    div[style*="grid-template-columns: 1fr"], section[style*="grid-template-columns: 1fr"] {
-      grid-template-columns: 1fr !important;
-      gap: 18px !important;
-    }
-    .lightbox-caption {
-      position: static !important;
-      bottom: auto !important;
-      margin-top: 10px !important;
-      font-size: 9px !important;
-      gap: 10px !important;
-      padding: 0 10px !important;
-    }
-    .work-index-head { padding: 12px 0 !important; }
-    .work-index-head > *:nth-child(2),
-    .work-index-head > *:nth-child(5),
-    .work-index-head > *:nth-child(6),
-    .work-index-head > *:nth-child(7),
-    .work-index-head > *:nth-child(8) {
-      display: none !important;
-    }
-    .work-index-head > *:nth-child(3) { font-size: 17px !important; }
-    .work-index-head > *:nth-child(4) { font-size: 11px !important; opacity: .55 !important; }
-
-    /* Make most stat header rows readable on phones */
-    div[style*="font-size: 11px"][style*="letter-spacing: .25em"],
-    div[style*="font-size: 12px"][style*="letter-spacing: .25em"] {
-      font-size: 10px !important;
-      letter-spacing: .15em !important;
-    }
-
-    /* Ensure top-level page padding is not too wide */
-    section[style*="padding: 60px 36px"] { padding-left: 14px !important; padding-right: 14px !important; }
-    section[style*="padding: 0 36px"] { padding-left: 14px !important; padding-right: 14px !important; }
-
-    /* Cap hero copy width on narrow phones */
-    .home-hero-copy { max-width: 100%; }
+    .site-footer { grid-template-columns: 1fr; gap: 12px; padding: 26px 18px calc(22px + env(safe-area-inset-bottom)); text-align: left; }
+    .site-footer .sf-copy { justify-self: start; text-align: left; }
+    .site-footer .sf-line { justify-self: start; text-align: left; }
+    .site-footer .sf-top { justify-self: start; text-align: left; }
   }
   @keyframes filmIn {
     0%   { opacity: 0; transform: translateY(6px); }
@@ -302,10 +248,6 @@
   }
   @media (max-width: 768px) {
     .bts-field-grid { grid-template-columns: 1fr; }
-    .bts-form-actions { justify-content: stretch; }
-    .bts-submit, .bts-submit.alt { width: 100%; padding: 14px 16px; }
-    .bts-pill { flex: 1 1 100%; min-width: 0; }
-    .bts-pill[aria-pressed="true"] { color: #000; }
   }
 
   /* ─── WHATSAPP FLOATING ACTION (monochrome) ───────────────────────── */
@@ -351,7 +293,26 @@
       width: 50px;
       height: 50px;
     }
-      body.footer-in-view .wa-fab { opacity: 1 !important; pointer-events: auto !important; transform: translateY(0) !important; }
+    /* On mobile the footer text is left-aligned, so the right-hand FAB never
+       overlaps "Back to top" — keep it reachable all the way down to the footer. */
+    body.footer-in-view .wa-fab {
+      opacity: 1;
+      pointer-events: auto;
+      transform: none;
+    }
+  }
+
+  /* Smoother hover on TopNav links */
+  div[style*="position: fixed"][style*="height: 60px"] button {
+    transition: opacity var(--t-fast), border-color var(--t-fast);
+  }
+
+  /* ─── MOBILE / PHONE ──────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    html { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+
+    /* Side-padding reductions on common section paddings */
+    section[style*="padding: 60px 36px"],
     section[style*="padding: 32px 36px"],
     section[style*="padding: 44px 36px"],
     section[style*="padding: 28px 36px"],
@@ -408,10 +369,6 @@
       grid-template-columns: 1fr !important;
       gap: 14px !important;
     }
-    section[style*="padding: 20px 36px 0"][style*="grid-template-columns: repeat(3, 1fr)"] {
-      grid-template-columns: 1fr !important;
-      gap: 18px !important;
-    }
 
     /* 6-col contact sheet → 2-col */
     div[style*="grid-template-columns: repeat(6, 1fr)"] {
@@ -441,57 +398,35 @@
     div[style*="font-size: 40px"]  { font-size: 28px !important; }
     div[style*="font-size: 36px"]  { font-size: 22px !important; }
 
-    /* TopNav: tighten and preserve the full header on mobile */
+    /* TopNav: tighten + hide non-essentials */
     div[style*="height: 60px"][style*="position: fixed"] {
       padding-left: 12px !important;
       padding-right: 12px !important;
-      padding-top: 16px !important;
-      padding-bottom: 12px !important;
-      height: auto !important;
-      flex-wrap: wrap !important;
-      align-items: flex-start !important;
-      justify-content: flex-start !important;
-      gap: 8px !important;
-      text-align: left !important;
     }
+    /* Brand: stack the name over the "· STILLS · CINE · BTS · POSTERS" tagline
+       on mobile so it stays present (as on desktop) without crowding the nav. */
     div[style*="height: 60px"][style*="position: fixed"] > button:first-child {
-      display: flex !important;
-      flex-wrap: wrap !important;
+      flex-direction: column !important;
       align-items: flex-start !important;
-      gap: 6px !important;
-      width: 100% !important;
-      justify-content: flex-start !important;
+      gap: 0 !important;
     }
     div[style*="height: 60px"][style*="position: fixed"] > button:first-child > span:first-child {
       font-size: 12px !important;
-      width: 100% !important;
-      text-align: left !important;
+      line-height: 1.1 !important;
     }
     div[style*="height: 60px"][style*="position: fixed"] > button:first-child > span:nth-child(2) {
       display: block !important;
-      font-size: 9px !important;
-      opacity: .75 !important;
-      letter-spacing: .18em !important;
-      width: 100% !important;
-      margin-top: 2px !important;
-      text-align: left !important;
+      font-size: 6.5px !important;
+      letter-spacing: .08em !important;
+      line-height: 1 !important;
     }
+    /* Compress nav items so HOME/WORK/SERIES/ABOUT/CONTACT all fit on one row */
     div[style*="height: 60px"][style*="position: fixed"] > div[style*="gap: 26px"] {
-      gap: 10px !important;
-      width: 100% !important;
-      justify-content: flex-start !important;
-      flex-wrap: wrap !important;
-      align-items: flex-end !important;
+      gap: 11px !important;
     }
     div[style*="height: 60px"][style*="position: fixed"] > div[style*="gap: 26px"] button {
-      font-size: 10px !important;
-      letter-spacing: .15em !important;
-      padding-bottom: 0 !important;
-      margin-bottom: -2px !important;
-      align-self: flex-end !important;
-    }
-    div[style*="height: 60px"][style*="position: fixed"] > div[style*="gap: 26px"] button[style*="border-bottom: 1px solid var(--accent)"] {
-      border-bottom: 2px solid var(--accent) !important;
+      font-size: 9px !important;
+      letter-spacing: .08em !important;
     }
 
     /* Filmstrip dock: smaller thumbs, less padding */
@@ -504,10 +439,13 @@
       height: 64px !important;
     }
 
-    /* Reduce PageWrap padding so home hero fits */
+    /* Reduce PageWrap padding so the home hero fits; use the dynamic viewport
+       height (dvh) so iOS Safari's collapsing toolbar doesn't reserve phantom
+       space that shows as an empty gap below the footer when scrolled. */
     div.page-enter {
       padding-top: 52px !important;
       padding-bottom: 104px !important;
+      min-height: calc(100dvh - var(--nav-h)) !important;
     }
     section[style*="min-height: calc(100vh"] {
       min-height: auto !important;
@@ -516,7 +454,10 @@
     /* Work index row: collapse 9-col grid to 3 cols (id / title+dir / arrow) */
     div[style*="grid-template-columns: 56px 70px 1.5fr 1.2fr 104px 60px 80px 60px 30px"] {
       grid-template-columns: 32px 1fr 22px !important;
-      gap: 10px !important;
+      grid-template-rows: auto auto !important;
+      align-items: center !important;
+      column-gap: 10px !important;
+      row-gap: 2px !important;
       padding: 12px 0 !important;
     }
     /* Hide kind badge, year, lang, location, days columns (positions 2,5,6,7,8) */
@@ -527,13 +468,31 @@
     div[style*="grid-template-columns: 56px 70px 1.5fr 1.2fr 104px 60px 80px 60px 30px"] > *:nth-child(8) {
       display: none !important;
     }
-    /* Title font-size scaling for collapsed rows */
-    div[style*="grid-template-columns: 56px 70px 1.5fr 1.2fr 104px 60px 80px 60px 30px"] > *:nth-child(3) {
-      font-size: 17px !important;
+    /* № / id — col 1, span both rows, centered */
+    div[style*="grid-template-columns: 56px 70px 1.5fr 1.2fr 104px 60px 80px 60px 30px"] > *:nth-child(1) {
+      grid-column: 1 !important;
+      grid-row: 1 / span 2 !important;
     }
+    /* Title — col 2, row 1 */
+    div[style*="grid-template-columns: 56px 70px 1.5fr 1.2fr 104px 60px 80px 60px 30px"] > *:nth-child(3) {
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      font-size: 17px !important;
+      align-self: end !important;
+    }
+    /* Director / artist — col 2, row 2 (stacked under title) */
     div[style*="grid-template-columns: 56px 70px 1.5fr 1.2fr 104px 60px 80px 60px 30px"] > *:nth-child(4) {
+      grid-column: 2 !important;
+      grid-row: 2 !important;
       font-size: 11px !important;
       opacity: .55 !important;
+      align-self: start !important;
+    }
+    /* Arrow — col 3, span both rows, centered */
+    div[style*="grid-template-columns: 56px 70px 1.5fr 1.2fr 104px 60px 80px 60px 30px"] > *:nth-child(9) {
+      grid-column: 3 !important;
+      grid-row: 1 / span 2 !important;
+      align-self: center !important;
     }
 
     /* Buttons row in hero meta — wrap nicely */
@@ -552,10 +511,34 @@
       right: 14px !important;
     }
 
+    /* Lightbox caption: sit lower beneath the image and wrap long instructions
+       so the counter / hints don't crowd the photo or overflow on mobile. */
+    .lb-caption {
+      bottom: -52px !important;
+      flex-wrap: wrap !important;
+      gap: 8px 14px !important;
+      padding: 0 12px !important;
+      font-size: 9px !important;
+    }
+
     /* Allow flex layout in hero "now showing" area to flow */
     div[style*="display: flex"][style*="justify-content: space-between"][style*="align-items: baseline"] {
       flex-wrap: wrap !important;
       gap: 8px !important;
+    }
+
+    /* Work filter / sort bar: reduce side padding and let the SORT/VIEW labels
+       wrap below the filter chips instead of clipping off the right edge. */
+    .work-filterbar {
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+      flex-wrap: wrap !important;
+      row-gap: 4px !important;
+    }
+    .work-filterbar > div:last-child {
+      gap: 16px !important;
+      opacity: .5 !important;
+      font-size: 9px !important;
     }
 
     /* Standardized 96px page hero gets a clean mobile size */
@@ -603,9 +586,6 @@
       .page-enter {
         padding-top: calc(52px + env(safe-area-inset-top)) !important;
         padding-bottom: calc(104px + env(safe-area-inset-bottom)) !important;
-      }
-      .site-footer {
-        padding-bottom: calc(24px + env(safe-area-inset-bottom)) !important;
       }
     }
   }
