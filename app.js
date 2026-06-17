@@ -631,7 +631,9 @@ function Lightbox(_ref8) {
       maxWidth: "82vw",
       maxHeight: "78vh",
       cursor: colorSrc ? "pointer" : "default",
-      userSelect: "none"
+      userSelect: "none",
+      WebkitUserSelect: "none",
+      WebkitTouchCallout: "none"
     }
   }, renderPicture(src, "Behind-the-scenes still", false),
      colorSrc && renderPicture(colorSrc, "Behind-the-scenes still (colour)", true),
@@ -1603,6 +1605,7 @@ function PageWork(_ref16) {
       opacity: .65
     }
   }, React.createElement("span", null, "SORT \u2014 RECENT"), React.createElement("span", null, "VIEW \u2014 LIST"))), React.createElement("div", {
+    className: "work-thead",
     style: {
       padding: "12px 36px",
       display: "grid",
@@ -2067,7 +2070,7 @@ function PageFilm(_ref20) {
       marginTop: 10
     }
   }, isLookTest ? "LOOK TESTS" : "SELECTS")), React.createElement("div", {
-    className: "series-selects-ctrl",
+    className: "series-selects-ctrl cs-ctrl",
     style: {
       display: "flex",
       gap: 18,
@@ -2562,6 +2565,7 @@ function PageSeriesDetail(_ref22) {
         for (var sp = 0; sp < spacersNeeded; sp++) {
           items.push(React.createElement("div", {
             key: "sp-".concat(sp),
+            className: "cs-spacer",
             style: {
               aspectRatio: "3/2",
               opacity: 0,
@@ -3154,7 +3158,7 @@ function PageContact(_ref40) {
   }, React.createElement(Eyebrow, null, "CONTACT \xB7 BOOKING & ENQUIRIES"), React.createElement(BigType, {
     size: "h1",
     style: {
-      marginTop: 18,
+      marginTop: 14,
       fontSize: "clamp(30px, 5vw, 52px)"
     }
   }, "GET IN TOUCH", React.createElement("span", {

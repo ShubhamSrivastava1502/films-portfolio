@@ -307,6 +307,18 @@
     transition: opacity var(--t-fast), border-color var(--t-fast);
   }
 
+  /* Lightbox image: suppress the native long-press behaviour on touch devices
+     (the iOS "Save Image / Copy" callout and the blue selection highlight) so
+     pressing the photo only toggles its colour. Routing pointer events to the
+     stage wrapper keeps the tap-to-toggle working. */
+  .lb-stage img,
+  .lb-stage picture {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
   /* ─── MOBILE / PHONE ──────────────────────────────────────────────── */
   @media (max-width: 768px) {
     html { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
@@ -318,9 +330,11 @@
     section[style*="padding: 28px 36px"],
     section[style*="padding: 20px 36px"],
     section[style*="padding: 0 36px"],
+    section[style*="padding: 0px 36px"],
     section[style*="padding-left: 36px"],
     div[style*="padding: 12px 36px"],
-    div[style*="padding: 0 36px"] {
+    div[style*="padding: 0 36px"],
+    div[style*="padding: 0px 36px"] {
       padding-left: 14px !important;
       padding-right: 14px !important;
     }
@@ -495,6 +509,21 @@
       grid-row: 1 / span 2 !important;
       align-self: center !important;
     }
+    /* Work index header: the grid-collapse rule above zeroes its horizontal
+       padding, which pushes № / TITLE to x:0 while the rows sit at the 14px
+       body inset. Restore the 14px inset so the header columns line up exactly
+       with the id and title of each row below. */
+    div.work-thead {
+      padding-left: 14px !important;
+      padding-right: 14px !important;
+    }
+    /* Series landscape\u2192portrait divider spacers are sized for the 6-col
+       desktop grid; on the 1-col mobile grid they become full-width blank
+       rows (almost a screen of empty space). Hide them on mobile. */
+    .cs-spacer { display: none !important; }
+    /* Portrait frames span 2 rows for desktop masonry alignment; on the
+       single-column mobile grid that span just adds empty track height. */
+    div[style*="grid-row: span 2"] { grid-row: auto !important; }
 
     /* Buttons row in hero meta — wrap nicely */
     div[style*="display: flex"][style*="gap: 14px"] > button {
@@ -556,6 +585,11 @@
       justify-content: space-between !important;
       align-items: flex-start !important;
       gap: 8px 14px !important;
+    }
+    /* Contact sheet has no "SOURCE PROJECT" label, so its control cluster is
+       alone \u2014 push it to the right like the toggle sits in the series view. */
+    .series-selects-ctrl.cs-ctrl {
+      justify-content: flex-end !important;
     }
     /* Drop "OR HOLD A FRAME" directly beneath the SHOW ALL IN COLOUR toggle,
        left-aligned to the toggle (overrides the inline align-self:center). */
