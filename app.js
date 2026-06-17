@@ -573,6 +573,7 @@ function Lightbox(_ref8) {
   }
   function navButton(dir) {
     return React.createElement("button", {
+      className: "lb-nav",
       onClick: function onClick(e) {
         e.stopPropagation();
         dir === "prev" ? goPrev() : goNext();
@@ -615,6 +616,7 @@ function Lightbox(_ref8) {
       cursor: "zoom-out"
     }
   }, hasNav && navButton("prev"), hasNav && navButton("next"), React.createElement("div", {
+    className: "lb-stage",
     onClick: function onClick(e) {
       e.stopPropagation();
       if (colorSrc) setInColor(function (v) {
@@ -1649,6 +1651,7 @@ function ContactFrame(_ref19) {
   var colorOn = colorable && (held || !!forceColor);
   var holdTimer = React.useRef(null);
   var didHold = React.useRef(false);
+  var touchPos = React.useRef(null);
   var ltCats = ["FRAMING", "LIGHT", "WARDROBE", "LOCATION", "PALETTE", "FACE"];
   // Use real photo orientation from PHOTO_DATA if available
   var realPhotoKey = "".concat(film.id, "_sheet_").concat(origIdx !== undefined ? origIdx : i);
@@ -1678,7 +1681,10 @@ function ContactFrame(_ref19) {
       position: "relative",
       cursor: colorable ? held ? "grabbing" : "grab" : "zoom-in",
       userSelect: "none",
-      touchAction: "none",
+      WebkitUserSelect: "none",
+      WebkitTapHighlightColor: "transparent",
+      WebkitTouchCallout: "none",
+      touchAction: "pan-y",
       transform: hover ? "scale(1.02)" : "scale(1)",
       transition: "transform .18s cubic-bezier(.2,.7,.3,1)",
       outline: hover ? "1px solid rgba(240,237,228,.3)" : "1px solid transparent"
@@ -1706,13 +1712,23 @@ function ContactFrame(_ref19) {
       setHeld(false);
     },
     onTouchStart: function onTouchStart(e) {
-      e.preventDefault();
+      var t = e.touches[0];
+      touchPos.current = { x: t.clientX, y: t.clientY };
       didHold.current = false;
       if (colorable) {
         holdTimer.current = setTimeout(function () {
           didHold.current = true;
           setHeld(true);
-        }, 180);
+        }, 220);
+      }
+    },
+    onTouchMove: function onTouchMove(e) {
+      if (!touchPos.current) return;
+      var t = e.touches[0];
+      if (Math.abs(t.clientX - touchPos.current.x) > 8 || Math.abs(t.clientY - touchPos.current.y) > 8) {
+        clearTimeout(holdTimer.current);
+        if (held) setHeld(false);
+        didHold.current = false;
       }
     },
     onTouchEnd: function onTouchEnd() {
@@ -2032,6 +2048,7 @@ function PageFilm(_ref20) {
     var frameCount = photoCount > 0 ? photoCount : 18;
     return null; // label is below
   }(), React.createElement("div", {
+    className: "series-selects-head",
     style: {
       display: "flex",
       justifyContent: "space-between",
@@ -2050,6 +2067,7 @@ function PageFilm(_ref20) {
       marginTop: 10
     }
   }, isLookTest ? "LOOK TESTS" : "SELECTS")), React.createElement("div", {
+    className: "series-selects-ctrl",
     style: {
       display: "flex",
       gap: 18,
@@ -2066,7 +2084,14 @@ function PageFilm(_ref20) {
         opacity: .7
       }
     }, c);
-  }) : colorFrames.size > 0 ? React.createElement(React.Fragment, null, React.createElement("button", {
+  }) : colorFrames.size > 0 ? React.createElement("div", {
+    className: "hold-group",
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 18
+    }
+  }, React.createElement("button", {
     onClick: function onClick() {
       setShowAllColour(function (v) {
         return !v;
@@ -2365,6 +2390,7 @@ function PageSeriesDetail(_ref22) {
   };
   var seriesDidHold = React.useRef(false);
   var seriesHoldTimer = React.useRef(null);
+  var seriesTouchPos = React.useRef(null);
   var frames = Array.from({
     length: 24
   }, function (_, i) {
@@ -2437,6 +2463,7 @@ function PageSeriesDetail(_ref22) {
       padding: "32px 36px 36px"
     }
   }, React.createElement("div", {
+    className: "series-selects-head",
     style: {
       display: "flex",
       justifyContent: "space-between",
@@ -2446,6 +2473,7 @@ function PageSeriesDetail(_ref22) {
   }, React.createElement(Eyebrow, null, "SELECTS \xB7 ", typeof SERIES_PHOTO_DATA !== "undefined" ? Object.keys(SERIES_PHOTO_DATA).filter(function (k) {
     return k.startsWith("series_".concat(s.id, "_"));
   }).length : 24, " FRAMES"), React.createElement("div", {
+    className: "series-selects-ctrl",
     style: {
       display: "flex",
       gap: 18,
@@ -2458,7 +2486,14 @@ function PageSeriesDetail(_ref22) {
     style: {
       color: "var(--accent)"
     }
-  }, "\u25CF SOURCE PROJECT"), React.createElement("button", {
+  }, "\u25CF SOURCE PROJECT"), React.createElement("div", {
+    className: "hold-group",
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 18
+    }
+  }, React.createElement("button", {
     onClick: function onClick() {
       setShowAllColour(function (v) {
         return !v;
@@ -2481,7 +2516,7 @@ function PageSeriesDetail(_ref22) {
       opacity: .5,
       alignSelf: "center"
     }
-  }, "OR HOLD A FRAME"))), function () {
+  }, "OR HOLD A FRAME")))), function () {
     var realFrames = typeof SERIES_PHOTO_DATA !== "undefined" ? Object.entries(SERIES_PHOTO_DATA).filter(function (_ref23) {
       var _ref24 = _slicedToArray(_ref23, 1),
         k = _ref24[0];
@@ -2575,6 +2610,11 @@ function PageSeriesDetail(_ref22) {
             aspectRatio: isPortrait ? "2/3" : "3/2",
             position: "relative",
             cursor: isHeld ? "grabbing" : "zoom-in",
+            WebkitTapHighlightColor: "transparent",
+            WebkitTouchCallout: "none",
+            userSelect: "none",
+            WebkitUserSelect: "none",
+            touchAction: "pan-y",
             transform: "scale(1)",
             transition: "transform .18s cubic-bezier(.2,.7,.3,1)",
             outline: "1px solid transparent"
@@ -2597,13 +2637,23 @@ function PageSeriesDetail(_ref22) {
           onMouseUp: function onMouseUp() {
             clearTimeout(seriesHoldTimer.current);
             setHeldFrame(null);
+          },
+          onTouchMove: function onTouchMove(e) {
+            if (!seriesTouchPos.current) return;
+            var t = e.touches[0];
+            if (Math.abs(t.clientX - seriesTouchPos.current.x) > 8 || Math.abs(t.clientY - seriesTouchPos.current.y) > 8) {
+              clearTimeout(seriesHoldTimer.current);
+              if (heldFrame === fi) setHeldFrame(null);
+              seriesDidHold.current = false;
+            }
           }
         }, "onMouseLeave", function onMouseLeave() {
           clearTimeout(seriesHoldTimer.current);
           setHeldFrame(null);
           seriesDidHold.current = false;
         }), "onTouchStart", function onTouchStart(e) {
-          e.preventDefault();
+          var t = e.touches[0];
+          seriesTouchPos.current = { x: t.clientX, y: t.clientY };
           seriesDidHold.current = false;
           if (isMono) return;
           seriesHoldTimer.current = setTimeout(function () {
@@ -2677,6 +2727,11 @@ function PageSeriesDetail(_ref22) {
             aspectRatio: _isPortrait ? "2/3" : "3/2",
             position: "relative",
             cursor: _isHeld ? "grabbing" : "zoom-in",
+            WebkitTapHighlightColor: "transparent",
+            WebkitTouchCallout: "none",
+            userSelect: "none",
+            WebkitUserSelect: "none",
+            touchAction: "pan-y",
             transform: "scale(1)",
             transition: "transform .18s cubic-bezier(.2,.7,.3,1)",
             outline: "1px solid transparent"
@@ -2704,7 +2759,8 @@ function PageSeriesDetail(_ref22) {
           setHeldFrame(null);
           seriesDidHold.current = false;
         }), "onTouchStart", function onTouchStart(e) {
-          e.preventDefault();
+          var t = e.touches[0];
+          seriesTouchPos.current = { x: t.clientX, y: t.clientY };
           seriesDidHold.current = false;
           seriesHoldTimer.current = setTimeout(function () {
             seriesDidHold.current = true;

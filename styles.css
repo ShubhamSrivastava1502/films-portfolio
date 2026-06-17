@@ -419,6 +419,7 @@
       font-size: 6.5px !important;
       letter-spacing: .08em !important;
       line-height: 1 !important;
+      margin-top: 4px !important;
     }
     /* Compress nav items so HOME/WORK/SERIES/ABOUT/CONTACT all fit on one row */
     div[style*="height: 60px"][style*="position: fixed"] > div[style*="gap: 26px"] {
@@ -511,14 +512,60 @@
       right: 14px !important;
     }
 
-    /* Lightbox caption: sit lower beneath the image and wrap long instructions
-       so the counter / hints don't crowd the photo or overflow on mobile. */
+    /* Lightbox caption: drop it fully below the image (top:100% guards against
+       overlap even when the hint text wraps to multiple lines on mobile). */
     .lb-caption {
-      bottom: -52px !important;
+      top: 100% !important;
+      bottom: auto !important;
+      margin-top: 12px !important;
       flex-wrap: wrap !important;
       gap: 8px 14px !important;
       padding: 0 12px !important;
       font-size: 9px !important;
+    }
+
+    /* Lightbox: narrow the image so the nav arrows sit in the side margins
+       instead of overlapping the photo, and leave vertical room for the
+       caption below the frame. The img/picture carry their own inline
+       max-width, so constrain them directly too. */
+    .lb-stage,
+    .lb-stage img,
+    .lb-stage picture {
+      max-width: 70vw !important;
+      max-height: 64vh !important;
+    }
+    .lb-nav {
+      width: 36px !important;
+      height: 36px !important;
+      font-size: 16px !important;
+    }
+    .lb-nav[aria-label="Previous image"] { left: 3px !important; }
+    .lb-nav[aria-label="Next image"] { right: 3px !important; }
+
+    /* Series / contact-sheet header: stack the eyebrow above the controls and
+       left-align everything so "SELECTS · N FRAMES", "SOURCE PROJECT",
+       "SHOW ALL IN COLOUR" and "OR HOLD A FRAME" line up cleanly on mobile. */
+    .series-selects-head {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 10px !important;
+    }
+    .series-selects-ctrl {
+      width: 100% !important;
+      flex-wrap: wrap !important;
+      justify-content: space-between !important;
+      align-items: flex-start !important;
+      gap: 8px 14px !important;
+    }
+    /* Drop "OR HOLD A FRAME" directly beneath the SHOW ALL IN COLOUR toggle,
+       left-aligned to the toggle (overrides the inline align-self:center). */
+    .hold-group {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 6px !important;
+    }
+    .hold-group > span {
+      align-self: flex-start !important;
     }
 
     /* Allow flex layout in hero "now showing" area to flow */
