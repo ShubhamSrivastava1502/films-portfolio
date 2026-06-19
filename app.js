@@ -546,6 +546,69 @@ function Lightbox(_ref8) {
       document.body.classList.remove("lb-open");
     };
   }, [onClose, goPrev, goNext, hasNav]);
+  // Touch interaction is bound NATIVELY (not through React) so we can call
+  // preventDefault() inside a non-passive touchstart listener. React 18
+  // registers touch listeners as passive at the root, which makes
+  // preventDefault a no-op — and without it Android/iOS run their native
+  // long-press behaviour: the blue selection highlight and the "Save Image"
+  // callout. Binding here lets a press-and-hold reveal colour cleanly, and a
+  // quick tap toggle it, with zero native interference.
+  var stageRef = React.useRef(null);
+  var colorSrcRef = React.useRef(colorSrc);
+  colorSrcRef.current = colorSrc;
+  React.useEffect(function () {
+    var el = stageRef.current;
+    if (!el) return;
+    function onStart(e) {
+      // Let real controls (e.g. the B&W/COLOUR button inside the stage) work.
+      if (e.target && e.target.closest && e.target.closest("button")) {
+        touchPos.current = null;
+        return;
+      }
+      e.preventDefault();
+      var t = e.touches[0];
+      touchPos.current = t ? { x: t.clientX, y: t.clientY } : { x: 0, y: 0 };
+      didHold.current = false;
+      if (colorSrcRef.current) {
+        holdTimer.current = setTimeout(function () {
+          didHold.current = true;
+          setHeld(true);
+        }, 200);
+      }
+    }
+    function onMove(e) {
+      if (!touchPos.current) return;
+      var t = e.touches[0];
+      if (t && (Math.abs(t.clientX - touchPos.current.x) > 8 || Math.abs(t.clientY - touchPos.current.y) > 8)) {
+        clearTimeout(holdTimer.current);
+        setHeld(false);
+        didHold.current = true;
+      }
+    }
+    function onEnd() {
+      if (!touchPos.current) return;
+      touchPos.current = null;
+      clearTimeout(holdTimer.current);
+      setHeld(false);
+      // Quick tap (not a hold or drag) toggles the persistent colour state.
+      if (!didHold.current && colorSrcRef.current) {
+        setInColor(function (v) {
+          return !v;
+        });
+      }
+      didHold.current = false;
+    }
+    el.addEventListener("touchstart", onStart, { passive: false });
+    el.addEventListener("touchmove", onMove, { passive: false });
+    el.addEventListener("touchend", onEnd);
+    el.addEventListener("touchcancel", onEnd);
+    return function () {
+      el.removeEventListener("touchstart", onStart);
+      el.removeEventListener("touchmove", onMove);
+      el.removeEventListener("touchend", onEnd);
+      el.removeEventListener("touchcancel", onEnd);
+    };
+  }, []);
   // src / colorSrc may be a string OR an object { src, srcWebp, srcAvif }
   function renderPicture(pic, alt, isColor) {
     if (!pic) return null;
@@ -634,9 +697,12 @@ function Lightbox(_ref8) {
     }
   }, hasNav && navButton("prev"), hasNav && navButton("next"), React.createElement("div", {
     className: "lb-stage",
+    ref: stageRef,
     onClick: function onClick(e) {
       e.stopPropagation();
-      // A press-and-hold already revealed colour; don't also toggle on release.
+      // Desktop (mouse) tap-to-toggle. On touch devices, taps are handled by the
+      // native touchend listener because touchstart is preventDefaulted to kill
+      // the Android/iOS long-press selection + "Save Image" callout.
       if (didHold.current) {
         didHold.current = false;
         return;
@@ -661,35 +727,6 @@ function Lightbox(_ref8) {
     onMouseLeave: function onMouseLeave() {
       clearTimeout(holdTimer.current);
       setHeld(false);
-    },
-    onTouchStart: function onTouchStart(e) {
-      var t = e.touches[0];
-      touchPos.current = t ? { x: t.clientX, y: t.clientY } : null;
-      didHold.current = false;
-      if (colorSrc) {
-        holdTimer.current = setTimeout(function () {
-          didHold.current = true;
-          setHeld(true);
-        }, 200);
-      }
-    },
-    onTouchMove: function onTouchMove(e) {
-      if (!touchPos.current) return;
-      var t = e.touches[0];
-      if (t && (Math.abs(t.clientX - touchPos.current.x) > 8 || Math.abs(t.clientY - touchPos.current.y) > 8)) {
-        clearTimeout(holdTimer.current);
-        if (held) setHeld(false);
-        didHold.current = false;
-      }
-    },
-    onTouchEnd: function onTouchEnd() {
-      clearTimeout(holdTimer.current);
-      setHeld(false);
-    },
-    onTouchCancel: function onTouchCancel() {
-      clearTimeout(holdTimer.current);
-      setHeld(false);
-      didHold.current = false;
     },
     onContextMenu: function onContextMenu(e) {
       return e.preventDefault();
@@ -735,12 +772,12 @@ function Lightbox(_ref8) {
       fontWeight: 700,
       padding: "5px 12px",
       cursor: "pointer",
-      color: inColor ? "#000" : "#fff",
-      background: inColor ? "var(--accent)" : "transparent",
-      border: "1px solid ".concat(inColor ? "var(--accent)" : "rgba(255,255,255,.4)"),
+      color: showColor ? "#000" : "#fff",
+      background: showColor ? "var(--accent)" : "transparent",
+      border: "1px solid ".concat(showColor ? "var(--accent)" : "rgba(255,255,255,.4)"),
       transition: "background .2s, color .2s, border-color .2s"
     }
-  }, inColor ? "\u25D0 COLOUR" : "\u25D0 B&W"), hasNav && React.createElement("span", {
+  }, showColor ? "\u25D0 COLOUR" : "\u25D0 B&W"), hasNav && React.createElement("span", {
     style: { opacity: .8 }
   }, String(safeIdx + 1).padStart(2, "0"), " / ", String(count).padStart(2, "0")), React.createElement("span", null, hasNav ? colorSrc ? "\u2190 \u2192 TO BROWSE \xB7 CLICK TO TOGGLE COLOUR \xB7 ESC TO CLOSE" : "\u2190 \u2192 TO BROWSE \xB7 ESC TO CLOSE" : colorSrc ? "CLICK IMAGE TO TOGGLE COLOUR \xB7 ESC OR CLICK OUTSIDE TO CLOSE" : "ESC OR CLICK OUTSIDE TO CLOSE"))), React.createElement("button", {
     onClick: onClose,

@@ -311,11 +311,17 @@
      (the iOS "Save Image / Copy" callout and the blue selection highlight) so
      pressing the photo only toggles its colour. Routing pointer events to the
      stage wrapper keeps the tap-to-toggle working. */
+  .lb-stage,
   .lb-stage img,
   .lb-stage picture {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
+    -moz-user-select: none;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lb-stage img,
+  .lb-stage picture {
     pointer-events: none;
   }
 
