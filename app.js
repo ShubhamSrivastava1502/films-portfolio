@@ -507,6 +507,16 @@ function Lightbox(_ref8) {
   var _colorState = React.useState(!!initialColor),
     inColor = _colorState[0],
     setInColor = _colorState[1];
+  // Momentary "hold to reveal colour" gesture (matches the contact-sheet UX).
+  // Holding the photo shows colour while pressed; releasing reverts. A quick
+  // tap still toggles the persistent colour state (didHold distinguishes them).
+  var _heldState = React.useState(false),
+    held = _heldState[0],
+    setHeld = _heldState[1];
+  var holdTimer = React.useRef(null);
+  var didHold = React.useRef(false);
+  var touchPos = React.useRef(null);
+  var showColor = inColor || held;
   var count = list.length;
   var safeIdx = count ? (idx % count + count) % count : 0;
   var current = list[safeIdx] || {};
@@ -559,8 +569,15 @@ function Lightbox(_ref8) {
         objectFit: "contain",
         display: "block",
         filter: isColor ? undefined : "grayscale(1) contrast(1.08) brightness(.92)",
-        opacity: isColor ? (inColor ? 1 : 0) : (inColor ? 0 : 1),
-        transition: "opacity .25s cubic-bezier(.3,.7,.3,1)"
+        opacity: isColor ? (showColor ? 1 : 0) : (showColor ? 0 : 1),
+        transition: "opacity .25s cubic-bezier(.3,.7,.3,1)",
+        // Suppress the iOS long-press "Save Image / Copy" callout and the
+        // selection highlight directly on the <img> so holding the photo only
+        // reveals colour. Inline so it can't be defeated by CSS caching.
+        WebkitTouchCallout: "none",
+        WebkitUserSelect: "none",
+        userSelect: "none",
+        pointerEvents: "none"
       }
     }));
     return React.createElement("picture", {
@@ -619,9 +636,60 @@ function Lightbox(_ref8) {
     className: "lb-stage",
     onClick: function onClick(e) {
       e.stopPropagation();
+      // A press-and-hold already revealed colour; don't also toggle on release.
+      if (didHold.current) {
+        didHold.current = false;
+        return;
+      }
       if (colorSrc) setInColor(function (v) {
         return !v;
       });
+    },
+    onMouseDown: function onMouseDown() {
+      didHold.current = false;
+      if (colorSrc) {
+        holdTimer.current = setTimeout(function () {
+          didHold.current = true;
+          setHeld(true);
+        }, 180);
+      }
+    },
+    onMouseUp: function onMouseUp() {
+      clearTimeout(holdTimer.current);
+      setHeld(false);
+    },
+    onMouseLeave: function onMouseLeave() {
+      clearTimeout(holdTimer.current);
+      setHeld(false);
+    },
+    onTouchStart: function onTouchStart(e) {
+      var t = e.touches[0];
+      touchPos.current = t ? { x: t.clientX, y: t.clientY } : null;
+      didHold.current = false;
+      if (colorSrc) {
+        holdTimer.current = setTimeout(function () {
+          didHold.current = true;
+          setHeld(true);
+        }, 200);
+      }
+    },
+    onTouchMove: function onTouchMove(e) {
+      if (!touchPos.current) return;
+      var t = e.touches[0];
+      if (t && (Math.abs(t.clientX - touchPos.current.x) > 8 || Math.abs(t.clientY - touchPos.current.y) > 8)) {
+        clearTimeout(holdTimer.current);
+        if (held) setHeld(false);
+        didHold.current = false;
+      }
+    },
+    onTouchEnd: function onTouchEnd() {
+      clearTimeout(holdTimer.current);
+      setHeld(false);
+    },
+    onTouchCancel: function onTouchCancel() {
+      clearTimeout(holdTimer.current);
+      setHeld(false);
+      didHold.current = false;
     },
     onContextMenu: function onContextMenu(e) {
       return e.preventDefault();

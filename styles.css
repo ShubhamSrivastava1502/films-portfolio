@@ -319,6 +319,17 @@
     pointer-events: none;
   }
 
+  /* Contact-sheet frames: on touch devices a long-press (the hold-for-colour
+     gesture) would otherwise trigger the native selection highlight / iOS
+     callout, making the whole frame look "selected". Suppress it so holding a
+     frame only changes its colour. */
+  .grain,
+  .grain * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
   /* ─── MOBILE / PHONE ──────────────────────────────────────────────── */
   @media (max-width: 768px) {
     html { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
